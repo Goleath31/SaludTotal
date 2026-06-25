@@ -4,6 +4,9 @@
 
 package basesavanzadas.entidad;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 /**
  *
  * @author golea
@@ -11,6 +14,8 @@ package basesavanzadas.entidad;
 public class Entidad {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ConexionPU");
+        System.out.println("Completo");
+        emf.close();
     }
 }
