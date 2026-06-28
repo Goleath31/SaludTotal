@@ -46,6 +46,24 @@ public class ResultadoEntidad implements Serializable {
     public ResultadoEntidad() {
     }
 
+    public PruebaEntidad getPrueba() {
+        return prueba;
+    }
+
+    public void setPrueba(PruebaEntidad prueba) {
+        this.prueba = prueba;
+    }
+
+    public ParametroEntidad getParametro() {
+        return parametro;
+    }
+
+    public void setParametro(ParametroEntidad parametro) {
+        this.parametro = parametro;
+    }
+
+    
+    
     public Long getId_resultado() {
         return id_resultado;
     }

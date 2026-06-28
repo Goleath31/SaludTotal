@@ -5,12 +5,15 @@
 package pantallas;
 
 import Exception.NegocioException;
+import daos.AnalisisDAO;
 import dtos.AnalisisDTO;
 import dtos.ClienteDTO;
 import dtos.DoctorDTO;
 import dtos.ParametroDTO;
 import dtos.PruebaDetalleDTO;
 import dtos.PruebaResumenDTO;
+import entidades.AnalisisEntidad;
+import entidades.ParametroEntidad;
 import exception.PersistenciaException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,8 @@ import servicios.ClienteService;
 import servicios.DoctorService;
 import servicios.ParametroService;
 import servicios.PruebaService;
+import servicios.ResultadoService;
+import entidades.PruebaEntidad;
 
 /**
  *
@@ -33,11 +38,17 @@ public class Ingreso_resultados extends javax.swing.JFrame {
     private DoctorService doctorService = new DoctorService();
     private ClienteService clienteService = new ClienteService();
     private PruebaService pruebaService = new PruebaService();
+    private daos.PruebaDAO pruebaDAO = new daos.PruebaDAO(new conexion.ConexionBD());
+    private List<ParametroDTO> listaParametrosCargados;
 
+    private AnalisisDAO analisisDAO = new AnalisisDAO(new conexion.ConexionBD());
     private ParametroService parametroService = new ParametroService();
     private List<DoctorDTO> listaDoctores;
 
     private List<AnalisisDTO> listaAnalisisActuales = new ArrayList<>();
+
+    private ResultadoService resultadoService = new ResultadoService(); // Nueva instancia
+    private Long idPruebaActual;
 
     /**
      * Creates new form Ingreso_resultados
@@ -45,6 +56,7 @@ public class Ingreso_resultados extends javax.swing.JFrame {
     public Ingreso_resultados() throws PersistenciaException {
         initComponents();
         cargarDoctores();
+        jtableparametros.setDefaultRenderer(Object.class, new javax.swing.table.DefaultTableCellRenderer());
     }
 
     private void cargarDoctores() {
@@ -63,6 +75,28 @@ public class Ingreso_resultados extends javax.swing.JFrame {
                     "Error al cargar la lista de médicos: " + e.getMessage(),
                     "Error de sistema",
                     javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void cargarAnalisisEnCombo(Long idPrueba) {
+        try {
+            // 1. Limpiamos ambos
+            listaAnalisisActuales.clear();
+            cbxanalisis.removeAllItems();
+
+            // 2. Obtenemos los datos del DAO
+            List<AnalisisEntidad> entidades = analisisDAO.consultarAnalisisPorPrueba(idPrueba);
+
+            // 3. Llenamos y sincronizamos
+            for (AnalisisEntidad e : entidades) {
+                AnalisisDTO dto = new AnalisisDTO(e.getId_analisis(), e.getNombre());
+                listaAnalisisActuales.add(dto);
+                cbxanalisis.addItem(dto.getNombre());
+            }
+
+            System.out.println("Análisis cargados: " + listaAnalisisActuales.size());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar análisis: " + ex.getMessage());
         }
     }
 
@@ -112,7 +146,11 @@ public class Ingreso_resultados extends javax.swing.JFrame {
         jtableparametros = new javax.swing.JTable();
         cbxanalisis = new javax.swing.JComboBox<>();
         btncambiar = new javax.swing.JButton();
+        lblEscribirfolio = new javax.swing.JLabel();
         btnguardarparametros = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtobservacion = new javax.swing.JTextArea();
+        lblobservacion = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -260,7 +298,7 @@ public class Ingreso_resultados extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 960, 50));
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 970, 50));
 
         lblpendientes.setText("PENDIENTES");
 
@@ -394,11 +432,11 @@ public class Ingreso_resultados extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Parametro", "valor obtenido", "rango normal", "unidad"
+                "Parametro", "valor", "rango normal", "unidad"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, true, false, false
@@ -423,6 +461,8 @@ public class Ingreso_resultados extends javax.swing.JFrame {
             }
         });
 
+        lblEscribirfolio.setText("escribir folio");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -433,7 +473,9 @@ public class Ingreso_resultados extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-                        .addGap(209, 209, 209)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblEscribirfolio, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(99, 99, 99)
                         .addComponent(btncambiar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbxanalisis, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -449,14 +491,15 @@ public class Ingreso_resultados extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cbxanalisis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cbxanalisis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblEscribirfolio))
                     .addComponent(btncambiar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(157, 157, 157))
         );
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 170, 660, 460));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 170, 660, 350));
 
         btnguardarparametros.setText("guardar");
         btnguardarparametros.addActionListener(new java.awt.event.ActionListener() {
@@ -464,7 +507,16 @@ public class Ingreso_resultados extends javax.swing.JFrame {
                 btnguardarparametrosActionPerformed(evt);
             }
         });
-        jPanel1.add(btnguardarparametros, new org.netbeans.lib.awtextra.AbsoluteConstraints(955, 640, 130, -1));
+        jPanel1.add(btnguardarparametros, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 600, 130, 50));
+
+        txtobservacion.setColumns(20);
+        txtobservacion.setRows(5);
+        jScrollPane2.setViewportView(txtobservacion);
+
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 560, 520, 100));
+
+        lblobservacion.setText("OBERVACION:");
+        jPanel1.add(lblobservacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 540, 160, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -518,10 +570,46 @@ public class Ingreso_resultados extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, e.getMessage());
             }
         }
+
     }//GEN-LAST:event_btncambiarmedicoActionPerformed
 
     private void btnguardarparametrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarparametrosActionPerformed
         // TODO add your handling code here:
+        String folioActual = lblEscribirfolio.getText();
+        String observacionTexto = txtobservacion.getText();
+
+        if (folioActual == null || folioActual.equals("escribir folio") || folioActual.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Error: Debe buscar un folio primero.");
+            return;
+        }
+
+        try {
+            // 2. Obtener el ID de la prueba desde la BD
+            PruebaEntidad prueba = pruebaDAO.buscarPorFolio(folioActual);
+            Long idPrueba = prueba.getId_prueba();
+
+            DefaultTableModel model = (DefaultTableModel) jtableparametros.getModel();
+
+            // 3. Recorrer la tabla para guardar cada fila
+            for (int i = 0; i < model.getRowCount(); i++) {
+                String valor = (String) model.getValueAt(i, 1);
+
+                // Omitir filas vacías si es necesario
+                if (valor == null || valor.trim().isEmpty()) {
+                    continue;
+                }
+
+                ParametroDTO p = this.listaParametrosCargados.get(i);
+
+                // 4. Llamar al servicio pasando los 4 parámetros
+                resultadoService.registrarResultado(p.getId(), idPrueba, valor, observacionTexto);
+            }
+
+            JOptionPane.showMessageDialog(this, "Resultados y observación guardados exitosamente.");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnguardarparametrosActionPerformed
 
     private void btnbuscarpacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscarpacienteActionPerformed
@@ -529,8 +617,7 @@ public class Ingreso_resultados extends javax.swing.JFrame {
     }//GEN-LAST:event_btnbuscarpacienteActionPerformed
 
     private void btncapturarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncapturarActionPerformed
-        // TODO add your handling code here:
-// 1. Obtener la selección de la lista
+
         String seleccion = jList1.getSelectedValue();
         if (seleccion == null) {
             JOptionPane.showMessageDialog(this, "Por favor, seleccione una prueba de la lista.");
@@ -538,11 +625,10 @@ public class Ingreso_resultados extends javax.swing.JFrame {
         }
 
         try {
-            // 2. Extraer el folio (asumiendo formato "Folio: XXX | Cliente: YYY")
+            // 2. Extraer el folio
             String folio = seleccion.split(" \\| ")[0].replace("Folio: ", "");
 
             // 3. Obtener el detalle del paciente
-            // (Asegúrate de que este método devuelva el DTO con nombre, sexo, médico, etc.)
             PruebaDetalleDTO detalle = pruebaService.obtenerDetallePrueba(folio);
 
             // 4. Llenar los Labels
@@ -551,11 +637,14 @@ public class Ingreso_resultados extends javax.swing.JFrame {
             lblescribirsexo.setText(detalle.getSexo());
             lblnombremedico.setText(detalle.getNombreMedico());
             lblescribirfechadetoma.setText(detalle.getFechaToma());
+            lblEscribirfolio.setText(folio);
 
-            // 5. Cargar los análisis en el JComboBox cbxanalisis
-            List<AnalisisDTO> listaAnalisis = pruebaService.obtenerAnalisisPorFolio(folio);
+            // 5. Cargar los análisis en la lista de clase y en el JComboBox
+            // Usamos la lista de clase 'listaAnalisisActuales' para que btncambiar pueda usarla después
+            listaAnalisisActuales = pruebaService.obtenerAnalisisPorFolio(folio);
+
             cbxanalisis.removeAllItems();
-            for (AnalisisDTO analisis : listaAnalisis) {
+            for (AnalisisDTO analisis : listaAnalisisActuales) {
                 cbxanalisis.addItem(analisis.getNombre());
             }
 
@@ -563,45 +652,40 @@ public class Ingreso_resultados extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al capturar datos: " + ex.getMessage());
         }
 
+
     }//GEN-LAST:event_btncapturarActionPerformed
 
     private void btncambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncambiarActionPerformed
-        // TODO add your handling code here:
-        // 1. Validación: ¿Se han capturado los datos previamente?
-        if (listaAnalisisActuales == null || listaAnalisisActuales.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, primero capture los datos de un paciente.");
+        int index = cbxanalisis.getSelectedIndex();
+
+        // 2. Validar que la selección sea válida
+        if (index < 0 || index >= listaAnalisisActuales.size()) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione un análisis válido.");
             return;
         }
 
-        // 2. Validación: ¿Hay algo seleccionado en el combo?
-        int index = cbxanalisis.getSelectedIndex();
-        if (index == -1) {
-            JOptionPane.showMessageDialog(this, "Por favor, seleccione un análisis del combo.");
-            return;
-        }
+        // 3. Obtener el DTO de la lista (Esto ya no dará error de tipos)
+        AnalisisDTO seleccionado = listaAnalisisActuales.get(index);
 
         try {
-            // 3. Recuperamos el objeto DTO mediante el índice (evita ClassCastException)
-            AnalisisDTO seleccionado = listaAnalisisActuales.get(index);
+            // 4. Obtener parámetros usando el ID del DTO
+            this.listaParametrosCargados = parametroService.obtenerPorAnalisis(seleccionado.getId());
 
-            // 4. Consultamos los parámetros usando el ID del análisis
-            List<ParametroDTO> parametros = parametroService.obtenerPorAnalisis(seleccionado.getId());
-
-            // 5. Llenamos la tabla
+            // 5. Cargar los datos en la tabla
             DefaultTableModel model = (DefaultTableModel) jtableparametros.getModel();
             model.setRowCount(0); // Limpiar tabla
 
-            for (ParametroDTO p : parametros) {
+            for (ParametroDTO p : this.listaParametrosCargados) {
                 model.addRow(new Object[]{
                     p.getNombre(),
-                    "", // Valor obtenido (vacío)
-                    p.getRangoFormateado(),
-                    p.getUnidad()
+                    "", // Espacio para que el usuario escriba el valor
+                    p.getUnidad(),
+                    p.getRangoFormateado()
                 });
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar parámetros: " + e.getMessage());
-            e.printStackTrace(); // Útil para depurar en consola
+            JOptionPane.showMessageDialog(this, "Error al cargar los parámetros: " + e.getMessage());
+            Logger.getLogger(Ingreso_resultados.class.getName()).log(Level.SEVERE, null, e);
         }
     }//GEN-LAST:event_btncambiarActionPerformed
 
@@ -673,15 +757,19 @@ public class Ingreso_resultados extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jlistadependientes;
     private javax.swing.JTable jtableparametros;
+    private javax.swing.JLabel lblEscribirfolio;
     private javax.swing.JLabel lblescribirfechadetoma;
     private javax.swing.JLabel lblescribirid;
     private javax.swing.JLabel lblescribirsexo;
     private javax.swing.JLabel lblmediconombre;
     private javax.swing.JLabel lblnombredelpaciente;
     private javax.swing.JLabel lblnombremedico;
+    private javax.swing.JLabel lblobservacion;
     private javax.swing.JLabel lblpendientes;
     private javax.swing.JTextField txtbuscarpaciente;
+    private javax.swing.JTextArea txtobservacion;
     // End of variables declaration//GEN-END:variables
 }

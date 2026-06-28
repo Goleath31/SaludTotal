@@ -44,16 +44,18 @@ public class ParametroService {
                 }
 
                 dtos.add(new ParametroDTO(
+                        p.getId_parametro(),
                         p.getNombre(),
                         min,
                         max,
-                        p.getUnidadMedida().getNombre()
+                        p.getUnidadMedida().getNombre(),
+                        ""
                 ));
             }
             return dtos;
         } catch (PersistenciaException e) {
             throw new Exception("Error en la capa de negocio: " + e.getMessage());
         }
-    
-}
+
+    }
 }

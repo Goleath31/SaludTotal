@@ -53,6 +53,8 @@ public class ParametroEntidad implements Serializable {
     
     public ParametroEntidad() {
     }
+    
+    
 
     public AnalisisEntidad getAnalisis() {
         return analisis;
