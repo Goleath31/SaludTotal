@@ -13,4 +13,5 @@ import exception.PersistenciaException;
  */
 public interface IResultadoDAO {
     void guardar(ResultadoEntidad resultado) throws PersistenciaException;
+    ResultadoEntidad buscarPorPruebayParametro(Long idPrueba, Long idParametro);
 }

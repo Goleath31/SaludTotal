@@ -38,4 +38,22 @@ public class ResultadoDAO implements IResultadoDAO {
             em.close();
         }
     }
+
+    public ResultadoEntidad buscarPorPruebayParametro(Long idPrueba, Long idParametro) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            // Usamos una consulta JPQL para buscar el registro único
+            String jpql = "SELECT r FROM ResultadoEntidad r WHERE r.prueba.id_prueba = :idPrueba AND r.parametro.id_parametro = :idParametro";
+
+            return em.createQuery(jpql, ResultadoEntidad.class)
+                    .setParameter("idPrueba", idPrueba)
+                    .setParameter("idParametro", idParametro)
+                    .getSingleResult();
+        } catch (Exception e) {
+            // Si no se encuentra, retorna null
+            return null;
+        } finally {
+            em.close();
+        }
+    }
 }
