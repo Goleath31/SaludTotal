@@ -7,13 +7,16 @@ package pantallas;
 import Exception.NegocioException;
 import dtos.ClienteDTO;
 import dtos.DoctorDTO;
+import dtos.PruebaResumenDTO;
 import exception.PersistenciaException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import servicios.ClienteService;
 import servicios.DoctorService;
+import servicios.PruebaService;
 
 /**
  *
@@ -23,6 +26,8 @@ public class Ingreso_resultados extends javax.swing.JFrame {
 
     private DoctorService doctorService = new DoctorService();
     private ClienteService clienteService = new ClienteService();
+    private PruebaService pruebaService = new PruebaService();
+
     private List<DoctorDTO> listaDoctores;
 
     /**
@@ -458,10 +463,25 @@ public class Ingreso_resultados extends javax.swing.JFrame {
 
     private void btncambiarmedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncambiarmedicoActionPerformed
         // TODO add your handling code here:
-        int indice = cbxmedicos.getSelectedIndex();
-        if (indice != -1) {
-            DoctorDTO seleccionado = listaDoctores.get(indice);
-            lblmediconombre.setText(seleccionado.getNombreCompleto());
+        // 1. Obtener el ID del médico seleccionado en el JComboBox
+        int index = cbxmedicos.getSelectedIndex();
+        if (index >= 0) {
+            DoctorDTO medico = listaDoctores.get(index);
+
+            try {
+                // 2. Obtener la lista filtrada
+                List<PruebaResumenDTO> lista = pruebaService.obtenerResumenPorMedico(medico.getId());
+
+                // 3. Cargar el JList
+                DefaultListModel<String> model = new DefaultListModel<>();
+                for (PruebaResumenDTO p : lista) {
+                    model.addElement(p.toString());
+                }
+                jList1.setModel(model);
+
+            } catch (NegocioException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
         }
     }//GEN-LAST:event_btncambiarmedicoActionPerformed
 
@@ -470,7 +490,7 @@ public class Ingreso_resultados extends javax.swing.JFrame {
     }//GEN-LAST:event_btnguardarparametrosActionPerformed
 
     private void btnbuscarpacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscarpacienteActionPerformed
-       
+
     }//GEN-LAST:event_btnbuscarpacienteActionPerformed
 
     /**

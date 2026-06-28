@@ -37,19 +37,16 @@ public class PruebaEntidad implements Serializable {
     @Column(name = "fecha_hora_generacion", nullable = false)
     private Date fechaHoraGeneracion;
 
-    
     @ManyToOne
     @JoinColumn(name = "id_cliente", nullable = false)
     private ClienteEntidad cliente;
-    
+
     @ManyToOne
     @JoinColumn(name = "id_doctor", nullable = false)
     private DoctorEntidad doctor;
 
     @OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)
     private List<ResultadoEntidad> resultados;
-    
-    
 
     public PruebaEntidad() {
     }
@@ -76,6 +73,10 @@ public class PruebaEntidad implements Serializable {
 
     public void setFechaHoraGeneracion(Date fechaHoraGeneracion) {
         this.fechaHoraGeneracion = fechaHoraGeneracion;
+    }
+
+    public ClienteEntidad getCliente() {
+        return cliente;
     }
 
     @Override
