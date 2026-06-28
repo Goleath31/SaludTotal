@@ -4,7 +4,7 @@
  */
 package interfaces;
 
-import entidades.PruebaEntidad;
+import entidades.AnalisisEntidad;
 import exception.PersistenciaException;
 import java.util.List;
 
@@ -12,9 +12,6 @@ import java.util.List;
  *
  * @author golea
  */
-public interface IPruebaDAO {
-
-    List<PruebaEntidad> consultarPorDoctor(Long idDoctor) throws PersistenciaException;
-    
-    PruebaEntidad buscarPorFolio(String folio) throws PersistenciaException;
+public interface IAnalisisDAO {
+    List<AnalisisEntidad> consultarAnalisisPorPrueba(Long idPrueba) throws PersistenciaException;
 }

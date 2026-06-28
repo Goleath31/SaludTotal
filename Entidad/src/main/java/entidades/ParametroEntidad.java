@@ -54,6 +54,32 @@ public class ParametroEntidad implements Serializable {
     public ParametroEntidad() {
     }
 
+    public AnalisisEntidad getAnalisis() {
+        return analisis;
+    }
+
+    public void setAnalisis(AnalisisEntidad analisis) {
+        this.analisis = analisis;
+    }
+
+    public UnidadMedidaEntidad getUnidadMedida() {
+        return unidadMedida;
+    }
+
+    public void setUnidadMedida(UnidadMedidaEntidad unidadMedida) {
+        this.unidadMedida = unidadMedida;
+    }
+
+    public List<RangoEvaluacionEntidad> getRangos() {
+        return rangos;
+    }
+
+    public void setRangos(List<RangoEvaluacionEntidad> rangos) {
+        this.rangos = rangos;
+    }
+    
+    
+
     public Long getId_parametro() {
         return id_parametro;
     }

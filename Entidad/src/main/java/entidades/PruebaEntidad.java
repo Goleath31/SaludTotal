@@ -79,6 +79,10 @@ public class PruebaEntidad implements Serializable {
         return cliente;
     }
 
+    public DoctorEntidad getDoctor() {
+        return doctor;
+    }
+
     @Override
     public String toString() {
         return "PruebaEntidad{" + "id_prueba=" + id_prueba + '}';

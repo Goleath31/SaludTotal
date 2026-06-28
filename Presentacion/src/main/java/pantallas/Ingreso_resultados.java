@@ -5,17 +5,23 @@
 package pantallas;
 
 import Exception.NegocioException;
+import dtos.AnalisisDTO;
 import dtos.ClienteDTO;
 import dtos.DoctorDTO;
+import dtos.ParametroDTO;
+import dtos.PruebaDetalleDTO;
 import dtos.PruebaResumenDTO;
 import exception.PersistenciaException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import servicios.ClienteService;
 import servicios.DoctorService;
+import servicios.ParametroService;
 import servicios.PruebaService;
 
 /**
@@ -28,7 +34,10 @@ public class Ingreso_resultados extends javax.swing.JFrame {
     private ClienteService clienteService = new ClienteService();
     private PruebaService pruebaService = new PruebaService();
 
+    private ParametroService parametroService = new ParametroService();
     private List<DoctorDTO> listaDoctores;
+
+    private List<AnalisisDTO> listaAnalisisActuales = new ArrayList<>();
 
     /**
      * Creates new form Ingreso_resultados
@@ -38,7 +47,7 @@ public class Ingreso_resultados extends javax.swing.JFrame {
         cargarDoctores();
     }
 
-    private void cargarDoctores() throws PersistenciaException {
+    private void cargarDoctores() {
 
         try {
             // Esta es la línea que está dando el error de compilación
@@ -84,9 +93,9 @@ public class Ingreso_resultados extends javax.swing.JFrame {
         btnbuscarpaciente = new javax.swing.JButton();
         JPPENDIENTES = new javax.swing.JPanel();
         lblpendientes = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         jlistadependientes = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
+        btncapturar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         lblnombredelpaciente = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -101,6 +110,8 @@ public class Ingreso_resultados extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtableparametros = new javax.swing.JTable();
+        cbxanalisis = new javax.swing.JComboBox<>();
+        btncambiar = new javax.swing.JButton();
         btnguardarparametros = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -253,14 +264,19 @@ public class Ingreso_resultados extends javax.swing.JFrame {
 
         lblpendientes.setText("PENDIENTES");
 
-        jLabel7.setText("NUM");
-
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
         jlistadependientes.setViewportView(jList1);
+
+        btncapturar.setText("capturar");
+        btncapturar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncapturarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout JPPENDIENTESLayout = new javax.swing.GroupLayout(JPPENDIENTES);
         JPPENDIENTES.setLayout(JPPENDIENTESLayout);
@@ -270,20 +286,20 @@ public class Ingreso_resultados extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(JPPENDIENTESLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jlistadependientes)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, JPPENDIENTESLayout.createSequentialGroup()
+                    .addGroup(JPPENDIENTESLayout.createSequentialGroup()
                         .addComponent(lblpendientes, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                        .addComponent(btncapturar)))
                 .addGap(36, 36, 36))
         );
         JPPENDIENTESLayout.setVerticalGroup(
             JPPENDIENTESLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPPENDIENTESLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addGap(14, 14, 14)
                 .addGroup(JPPENDIENTESLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblpendientes)
-                    .addComponent(jLabel7))
-                .addGap(38, 38, 38)
+                    .addComponent(btncapturar))
+                .addGap(34, 34, 34)
                 .addComponent(jlistadependientes, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(357, Short.MAX_VALUE))
         );
@@ -398,24 +414,43 @@ public class Ingreso_resultados extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jtableparametros);
 
+        cbxanalisis.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        btncambiar.setText("cambiar");
+        btncambiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncambiarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(236, 236, 236)
-                .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
-                .addGap(252, 252, 252))
-            .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+                        .addGap(209, 209, 209)
+                        .addComponent(btncambiar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbxanalisis, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 648, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(13, 13, 13)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cbxanalisis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btncambiar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(55, 55, 55))
@@ -493,6 +528,83 @@ public class Ingreso_resultados extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnbuscarpacienteActionPerformed
 
+    private void btncapturarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncapturarActionPerformed
+        // TODO add your handling code here:
+// 1. Obtener la selección de la lista
+        String seleccion = jList1.getSelectedValue();
+        if (seleccion == null) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una prueba de la lista.");
+            return;
+        }
+
+        try {
+            // 2. Extraer el folio (asumiendo formato "Folio: XXX | Cliente: YYY")
+            String folio = seleccion.split(" \\| ")[0].replace("Folio: ", "");
+
+            // 3. Obtener el detalle del paciente
+            // (Asegúrate de que este método devuelva el DTO con nombre, sexo, médico, etc.)
+            PruebaDetalleDTO detalle = pruebaService.obtenerDetallePrueba(folio);
+
+            // 4. Llenar los Labels
+            lblnombredelpaciente.setText(detalle.getNombrePaciente());
+            lblescribirid.setText(detalle.getIdPaciente());
+            lblescribirsexo.setText(detalle.getSexo());
+            lblnombremedico.setText(detalle.getNombreMedico());
+            lblescribirfechadetoma.setText(detalle.getFechaToma());
+
+            // 5. Cargar los análisis en el JComboBox cbxanalisis
+            List<AnalisisDTO> listaAnalisis = pruebaService.obtenerAnalisisPorFolio(folio);
+            cbxanalisis.removeAllItems();
+            for (AnalisisDTO analisis : listaAnalisis) {
+                cbxanalisis.addItem(analisis.getNombre());
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al capturar datos: " + ex.getMessage());
+        }
+
+    }//GEN-LAST:event_btncapturarActionPerformed
+
+    private void btncambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncambiarActionPerformed
+        // TODO add your handling code here:
+        // 1. Validación: ¿Se han capturado los datos previamente?
+        if (listaAnalisisActuales == null || listaAnalisisActuales.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, primero capture los datos de un paciente.");
+            return;
+        }
+
+        // 2. Validación: ¿Hay algo seleccionado en el combo?
+        int index = cbxanalisis.getSelectedIndex();
+        if (index == -1) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione un análisis del combo.");
+            return;
+        }
+
+        try {
+            // 3. Recuperamos el objeto DTO mediante el índice (evita ClassCastException)
+            AnalisisDTO seleccionado = listaAnalisisActuales.get(index);
+
+            // 4. Consultamos los parámetros usando el ID del análisis
+            List<ParametroDTO> parametros = parametroService.obtenerPorAnalisis(seleccionado.getId());
+
+            // 5. Llenamos la tabla
+            DefaultTableModel model = (DefaultTableModel) jtableparametros.getModel();
+            model.setRowCount(0); // Limpiar tabla
+
+            for (ParametroDTO p : parametros) {
+                model.addRow(new Object[]{
+                    p.getNombre(),
+                    "", // Valor obtenido (vacío)
+                    p.getRangoFormateado(),
+                    p.getUnidad()
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar parámetros: " + e.getMessage());
+            e.printStackTrace(); // Útil para depurar en consola
+        }
+    }//GEN-LAST:event_btncambiarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -536,8 +648,11 @@ public class Ingreso_resultados extends javax.swing.JFrame {
     private javax.swing.JPanel JPMENUDEPRINCIPAL;
     private javax.swing.JPanel JPPENDIENTES;
     private javax.swing.JButton btnbuscarpaciente;
+    private javax.swing.JButton btncambiar;
     private javax.swing.JButton btncambiarmedico;
+    private javax.swing.JButton btncapturar;
     private javax.swing.JButton btnguardarparametros;
+    private javax.swing.JComboBox<String> cbxanalisis;
     private javax.swing.JComboBox<String> cbxmedicos;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -551,7 +666,6 @@ public class Ingreso_resultados extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
