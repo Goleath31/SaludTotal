@@ -10,23 +10,25 @@ import dtos.ReportePacienteDTO;
 import interfaces.IReporteDAO;
 
 /**
- *
+ * Servicio encargado de la generación de reportes para el paciente.
+ * Simplifica la obtención de datos consolidados para la capa de presentación.
  * @author golea
  */
 public class ReporteService {
 
     private IReporteDAO reporteDAO;
 
+    /**
+     * Inicializa el servicio inyectando la implementación del DAO de reportes.
+     */
     public ReporteService() {
-        // Inicializamos el DAO inyectando la conexión
         this.reporteDAO = new ReporteDAO(new ConexionBD());
     }
 
     /**
      * Obtiene los datos consolidados de un paciente para generar el reporte.
-     *
-     * @param folio El folio de la prueba a consultar.
-     * @return El DTO con los datos del reporte.
+     * @param folio El número de folio de la prueba médica.
+     * @return DTO con la estructura completa para imprimir o visualizar el reporte.
      */
     public ReportePacienteDTO generarReporte(String folio) {
         if (folio == null || folio.isEmpty()) {

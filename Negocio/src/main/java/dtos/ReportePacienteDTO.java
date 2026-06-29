@@ -7,6 +7,9 @@ package dtos;
 import java.util.List;
 
 /**
+ * DTO que consolida toda la información de un reporte clínico para un paciente.
+ * Agrupa los datos del cliente, médico, análisis y la lista detallada de
+ * resultados.
  *
  * @author golea
  */

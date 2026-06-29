@@ -11,17 +11,28 @@ import interfaces.IResultadoDAO;
 import javax.persistence.EntityManager;
 
 /**
- *
+ * Implementación de la interfaz IResultadoDAO que maneja las operaciones 
+ * de persistencia para la entidad ResultadoEntidad[cite: 2].
  * @author golea
  */
 public class ResultadoDAO implements IResultadoDAO {
 
     private IConexionBD conexion;
 
+    /**
+     * Constructor para inicializar el acceso a la base de datos[cite: 2].
+     * @param conexion Objeto que proporciona el EntityManager[cite: 2].
+     */
     public ResultadoDAO(IConexionBD conexion) {
         this.conexion = conexion;
     }
 
+    
+    /**
+     * Guarda un nuevo resultado en la base de datos de manera transaccional[cite: 2].
+     * @param resultado La entidad a persistir[cite: 2].
+     * @throws PersistenciaException Si ocurre un error durante el proceso de guardado[cite: 2].
+     */
     @Override
     public void guardar(ResultadoEntidad resultado) throws PersistenciaException {
         EntityManager em = conexion.getEntityManager();
@@ -39,6 +50,12 @@ public class ResultadoDAO implements IResultadoDAO {
         }
     }
 
+    /**
+     * Busca un resultado específico mediante los IDs de prueba y parámetro asociados[cite: 2].
+     * @param idPrueba Identificador de la prueba[cite: 2].
+     * @param idParametro Identificador del parámetro[cite: 2].
+     * @return El ResultadoEntidad encontrado, o null si no existe el registro[cite: 2].
+     */
     public ResultadoEntidad buscarPorPruebayParametro(Long idPrueba, Long idParametro) {
         EntityManager em = conexion.getEntityManager();
         try {

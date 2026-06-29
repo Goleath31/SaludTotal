@@ -21,7 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Servicio encargado de la lógica de negocio para la gestión de pruebas médicas.
+ * Coordina la obtención de pruebas, análisis asociados y reportes de clientes.
  * @author golea
  */
 public class PruebaService {
@@ -30,19 +31,22 @@ public class PruebaService {
     private PruebaDAO pruebaDAO;
 
     public PruebaService() {
-        // 2. INICIALIZA el DAO
         IConexionBD conexion = new ConexionBD();
         this.pruebaDAO = new PruebaDAO(conexion);
     }
 
+    /**
+     * Obtiene un resumen de las pruebas asociadas a un médico para su visualización en listas.
+     * @param idDoctor ID del médico.
+     * @return Lista de PruebaResumenDTO con la información básica necesaria.
+     * @throws NegocioException En caso de error de persistencia.
+     */
     public List<PruebaResumenDTO> obtenerResumenPorMedico(Long idDoctor) throws NegocioException {
         try {
             List<PruebaEntidad> pruebas = pruebaDAO.consultarPorDoctor(idDoctor);
             List<PruebaResumenDTO> lista = new ArrayList<>();
 
             for (PruebaEntidad p : pruebas) {
-                // Si el error persiste, verifica en PruebaEntidad.java 
-                // cómo se llama exactamente el método (ej. getCliente())
                 String nombreCompleto = p.getCliente().getNombre() + " "
                         + p.getCliente().getApellido_paterno();
                 lista.add(new PruebaResumenDTO(p.getFolio(), nombreCompleto));
@@ -53,6 +57,12 @@ public class PruebaService {
         }
     }
 
+    /**
+     * Obtiene un resumen de las pruebas asociadas a un médico para su visualización en listas.
+     * @param idDoctor ID del médico.
+     * @return Lista de PruebaResumenDTO con la información básica necesaria.
+     * @throws NegocioException En caso de error de persistencia.
+     */
     public PruebaDetalleDTO obtenerDetallePrueba(String folio) throws NegocioException {
         try {
             PruebaEntidad p = pruebaDAO.buscarPorFolio(folio);
@@ -69,12 +79,15 @@ public class PruebaService {
         }
     }
 
+    /**
+     * Obtiene la lista de análisis vinculados a una prueba específica.
+     * @param folio Folio único de la prueba.
+     * @return Lista de objetos AnalisisDTO.
+     */
     public List<AnalisisDTO> obtenerAnalisisPorFolio(String folio) throws NegocioException {
         try {
-            // Primero obtenemos la prueba para tener el ID
             PruebaEntidad p = pruebaDAO.buscarPorFolio(folio);
 
-            // Luego consultamos los análisis mediante el nuevo DAO
             List<AnalisisEntidad> listaEntidades = analisisDAO.consultarAnalisisPorPrueba(p.getId_prueba());
 
             List<AnalisisDTO> listaDTO = new ArrayList<>();

@@ -22,15 +22,24 @@ import javax.persistence.criteria.Root;
  *
  * @author golea
  */
+
+/**
+ * Clase de acceso a datos para la entidad Prueba.
+ */
 public class PruebaDAO implements IPruebaDAO {
 
     private IConexionBD conexion;
 
-    // Inyectamos la interfaz en el constructor
     public PruebaDAO(IConexionBD conexion) {
         this.conexion = conexion;
     }
 
+    /**
+     * Consulta todas las pruebas asociadas a un doctor.
+     * @param idDoctor Identificador del doctor.
+     * @return Lista de pruebas.
+     * @throws PersistenciaException Si ocurre un error de base de datos.
+     */
     public List<PruebaEntidad> consultarPorDoctor(Long idDoctor) throws PersistenciaException {
         EntityManager em = conexion.getEntityManager();
         try {
@@ -38,7 +47,6 @@ public class PruebaDAO implements IPruebaDAO {
             CriteriaQuery<PruebaEntidad> criteria = builder.createQuery(PruebaEntidad.class);
             Root<PruebaEntidad> root = criteria.from(PruebaEntidad.class);
 
-            // Filtro: WHERE doctor.id_doctor = :idDoctor
             criteria.select(root).where(builder.equal(root.get("doctor").get("id_doctor"), idDoctor));
 
             return em.createQuery(criteria).getResultList();
@@ -47,6 +55,12 @@ public class PruebaDAO implements IPruebaDAO {
         }
     }
 
+    /**
+     * Busca una prueba específica mediante su folio.
+     * @param folio Folio de la prueba.
+     * @return La prueba encontrada.
+     * @throws PersistenciaException Si no existe la prueba o hay error.
+     */
     public PruebaEntidad buscarPorFolio(String folio) throws PersistenciaException {
         EntityManager em = conexion.getEntityManager();
         try {
@@ -62,6 +76,10 @@ public class PruebaDAO implements IPruebaDAO {
         }
     }
 
+    /**
+     * Obtiene una lista de DTOs con clientes que tienen sus pruebas completamente llenas.
+     * @return Lista de ClientePruebaCompletaDTO.
+     */
     @Override
     public List<ClientePruebaCompletaDTO> obtenerClientesConPruebasCompletas() {
         EntityManager em = conexion.getEntityManager();

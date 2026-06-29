@@ -21,17 +21,28 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 /**
- *
- * @author golea
+ * Implementación de la interfaz IReporteDAO para la gestión de acceso a datos 
+ * relacionados con los reportes de pacientes.
+ * * @author golea
  */
 public class ReporteDAO implements IReporteDAO {
 
     private IConexionBD conexion;
 
+    /**
+     * Constructor que inicializa la conexión con la base de datos.
+     * * @param conexion Implementación de la interfaz IConexionBD para gestionar el EntityManager.
+     */
     public ReporteDAO(IConexionBD conexion) {
         this.conexion = conexion;
     }
 
+    /**
+     * Obtiene los datos necesarios para generar un reporte de un paciente basado en un folio de prueba.
+     * * @param folio El identificador único de la prueba médica.
+     * @return Un objeto ReportePacienteDTO con la información del paciente, doctor, fecha y resultados, 
+     * o null si ocurre un error o el folio no existe.
+     */
     @Override
     public ReportePacienteDTO obtenerDatosReporte(String folio) {
         EntityManager em = conexion.getEntityManager();

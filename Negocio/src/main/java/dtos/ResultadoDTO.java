@@ -5,6 +5,8 @@
 package dtos;
 
 /**
+ * DTO utilizado durante el registro de resultados. Contiene la relación entre
+ * la prueba y el parámetro, junto con el valor obtenido.
  *
  * @author golea
  */
@@ -14,7 +16,7 @@ public class ResultadoDTO {
     private Long idPrueba;
     private String valor;
     private String observacion;
-    
+
     private String nombreParametro;
 
     public ResultadoDTO(Long idParametro, Long idPrueba, String valor, String observacion) {
@@ -32,8 +34,6 @@ public class ResultadoDTO {
         this.nombreParametro = nombreParametro;
     }
 
-    
-    
     public String getNombreParametro() {
         return nombreParametro;
     }
@@ -41,8 +41,6 @@ public class ResultadoDTO {
     public void setNombreParametro(String nombreParametro) {
         this.nombreParametro = nombreParametro;
     }
-    
-    
 
     public String getObservacion() {
         return observacion;
@@ -51,8 +49,6 @@ public class ResultadoDTO {
     public void setObservacion(String observacion) {
         this.observacion = observacion;
     }
-
-    
 
     public Long getIdParametro() {
         return idParametro;
@@ -77,6 +73,5 @@ public class ResultadoDTO {
     public void setValor(String valor) {
         this.valor = valor;
     }
-    
-    
+
 }

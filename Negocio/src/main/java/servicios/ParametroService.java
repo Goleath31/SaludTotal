@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Servicio para la gestión de parámetros clínicos y sus rangos de referencia.
  * @author golea
  */
 public class ParametroService {
@@ -23,18 +23,23 @@ public class ParametroService {
     private IParametroDAO parametroDAO;
 
     public ParametroService() {
-        // Asumiendo que usas ConexionBD para instanciar el DAO
         this.parametroDAO = new ParametroDAO(new ConexionBD());
     }
 
+    
+    /**
+     * Consulta y procesa los parámetros asociados a un análisis.
+     * Extrae los rangos de evaluación para presentarlos de forma simplificada.
+     * @param idAnalisis ID del análisis.
+     * @return Lista de ParametroDTO con rangos de referencia calculados.
+     * @throws Exception Si ocurre un error durante el acceso a datos.
+     */
     public List<ParametroDTO> obtenerPorAnalisis(Long idAnalisis) throws Exception {
         try {
             List<ParametroEntidad> entidades = parametroDAO.consultarPorAnalisis(idAnalisis);
             List<ParametroDTO> dtos = new ArrayList<>();
 
             for (ParametroEntidad p : entidades) {
-                // Obtenemos el rango (asumiendo que tomas el primero o el correspondiente a la edad/sexo)
-                // Aquí deberás ajustar según la lógica de negocio real para elegir el rango correcto
                 double min = 0.0;
                 double max = 0.0;
                 if (p.getRangos() != null && !p.getRangos().isEmpty()) {

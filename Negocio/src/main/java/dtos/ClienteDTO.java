@@ -10,6 +10,9 @@ package dtos;
  */
 import java.util.Date;
 
+/**
+ * Constructor vacío estándar.
+ */
 public class ClienteDTO {
 
     private Long id;
@@ -23,6 +26,16 @@ public class ClienteDTO {
     public ClienteDTO() {
     }
 
+    /**
+     * Constructor para inicializar los datos básicos del cliente. Concatena
+     * automáticamente los nombres y apellidos para la vista.
+     *
+     * * @param id Identificador único del cliente.
+     * @param nombre Nombre de pila.
+     * @param apellidoPaterno Apellido paterno.
+     * @param apellidoMaterno Apellido materno.
+     * @param sexo Género del cliente.
+     */
     public ClienteDTO(Long id, String nombre, String apellidoPaterno, String apellidoMaterno, String sexo) {
         this.id = id;
         this.nombreCompleto = nombre + " " + apellidoPaterno + " " + apellidoMaterno;
@@ -72,6 +85,5 @@ public class ClienteDTO {
     public void setFechaToma(String fechaToma) {
         this.fechaToma = fechaToma;
     }
-    
-    
+
 }

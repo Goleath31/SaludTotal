@@ -5,6 +5,8 @@
 package dtos;
 
 /**
+ * DTO que representa un parámetro clínico y su rango de referencia. Permite
+ * comparar valores ingresados contra rangos estándar.
  *
  * @author golea
  */
@@ -17,6 +19,7 @@ public class ParametroDTO {
     private String unidad;
     private String valorIngresado;
 
+    // Constructor para inicialización básica sin resultados
     public ParametroDTO(String nombre, double rangoMinimo, double rangoMaximo, String unidad) {
         this.nombre = nombre;
         this.rangoMinimo = rangoMinimo;
@@ -41,14 +44,16 @@ public class ParametroDTO {
     public void setId(Long id) {
         this.id = id;
     }
-    
-    
 
-    // Getters
     public String getNombre() {
         return nombre;
     }
 
+    /**
+     * Retorna el rango de referencia en un formato legible.
+     *
+     * @return String con formato "min - max".
+     */
     public String getRangoFormateado() {
         return rangoMinimo + " - " + rangoMaximo;
     }
@@ -80,5 +85,5 @@ public class ParametroDTO {
     public void setValorIngresado(String valorIngresado) {
         this.valorIngresado = valorIngresado;
     }
-    
+
 }

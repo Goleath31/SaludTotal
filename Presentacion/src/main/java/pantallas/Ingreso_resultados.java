@@ -47,12 +47,10 @@ public class Ingreso_resultados extends javax.swing.JFrame {
 
     private List<AnalisisDTO> listaAnalisisActuales = new ArrayList<>();
 
-    private ResultadoService resultadoService = new ResultadoService(); // Nueva instancia
+    private ResultadoService resultadoService = new ResultadoService();
     private Long idPruebaActual;
 
-    /**
-     * Creates new form Ingreso_resultados
-     */
+   
     public Ingreso_resultados() throws PersistenciaException {
         initComponents();
         cargarDoctores();
@@ -70,7 +68,6 @@ public class Ingreso_resultados extends javax.swing.JFrame {
                 cbxmedicos.addItem(doc.getNombreCompleto());
             }
         } catch (NegocioException e) {
-            // Aquí manejas el error. Al ser una pantalla, lo ideal es mostrar un mensaje al usuario.
             javax.swing.JOptionPane.showMessageDialog(this,
                     "Error al cargar la lista de médicos: " + e.getMessage(),
                     "Error de sistema",
@@ -120,11 +117,8 @@ public class Ingreso_resultados extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        lblmediconombre = new javax.swing.JLabel();
         cbxmedicos = new javax.swing.JComboBox<>();
         btncambiarmedico = new javax.swing.JButton();
-        txtbuscarpaciente = new javax.swing.JTextField();
-        btnbuscarpaciente = new javax.swing.JButton();
         JPPENDIENTES = new javax.swing.JPanel();
         lblpendientes = new javax.swing.JLabel();
         jlistadependientes = new javax.swing.JScrollPane();
@@ -159,26 +153,38 @@ public class Ingreso_resultados extends javax.swing.JFrame {
 
         JPMENUDEPRINCIPAL.setBackground(new java.awt.Color(31, 41, 55));
 
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Salud Total");
 
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Gestion de Laboratorio");
 
+        btncatalogo.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
+        btncatalogo.setForeground(new java.awt.Color(255, 255, 255));
         btncatalogo.setText("Catalogo");
+        btncatalogo.setBorder(null);
+        btncatalogo.setContentAreaFilled(false);
         btncatalogo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btncatalogoActionPerformed(evt);
             }
         });
 
+        btnsolicitudes.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
+        btnsolicitudes.setForeground(new java.awt.Color(255, 255, 255));
         btnsolicitudes.setText("Solicitudes");
+        btnsolicitudes.setContentAreaFilled(false);
         btnsolicitudes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnsolicitudesActionPerformed(evt);
             }
         });
 
+        btnresultados.setBackground(new java.awt.Color(0, 153, 255));
+        btnresultados.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
+        btnresultados.setForeground(new java.awt.Color(255, 255, 255));
         btnresultados.setText("Resultados");
         btnresultados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -186,8 +192,11 @@ public class Ingreso_resultados extends javax.swing.JFrame {
             }
         });
 
+        btnreportes.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
+        btnreportes.setForeground(new java.awt.Color(255, 255, 255));
         btnreportes.setText("Reportes");
         btnreportes.setToolTipText("");
+        btnreportes.setContentAreaFilled(false);
         btnreportes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnreportesActionPerformed(evt);
@@ -224,34 +233,28 @@ public class Ingreso_resultados extends javax.swing.JFrame {
                 .addComponent(btnresultados)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnreportes)
-                .addContainerGap(404, Short.MAX_VALUE))
+                .addContainerGap(425, Short.MAX_VALUE))
         );
 
         jPanel1.add(JPMENUDEPRINCIPAL, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, 690));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
+        jLabel3.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 153, 255));
         jLabel3.setText("Ingreso de Resultados");
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setText("Medico en turno");
-
-        lblmediconombre.setText("Nombre del medico");
 
         cbxmedicos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        btncambiarmedico.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btncambiarmedico.setForeground(new java.awt.Color(0, 153, 255));
         btncambiarmedico.setText("cambiar");
         btncambiarmedico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btncambiarmedicoActionPerformed(evt);
-            }
-        });
-
-        txtbuscarpaciente.setText("jTextField1");
-
-        btnbuscarpaciente.setText("Buscar");
-        btnbuscarpaciente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnbuscarpacienteActionPerformed(evt);
             }
         });
 
@@ -261,20 +264,14 @@ public class Ingreso_resultados extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(82, 82, 82)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblmediconombre, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 381, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
                 .addComponent(cbxmedicos, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btncambiarmedico)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtbuscarpaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnbuscarpaciente)
-                .addContainerGap())
+                .addComponent(btncambiarmedico)
+                .addGap(24, 24, 24))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -284,18 +281,12 @@ public class Ingreso_resultados extends javax.swing.JFrame {
                         .addGap(14, 14, 14)
                         .addComponent(jLabel3))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblmediconombre))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cbxmedicos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btncambiarmedico)
-                            .addComponent(txtbuscarpaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnbuscarpaciente))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel4))))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 970, 50));
@@ -344,20 +335,25 @@ public class Ingreso_resultados extends javax.swing.JFrame {
 
         jPanel1.add(JPPENDIENTES, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, 260, 640));
 
+        lblnombredelpaciente.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblnombredelpaciente.setText("NOMBRE DEL PACIENTE SELECIONADO");
 
         jLabel9.setText("ID:");
 
+        lblescribirid.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblescribirid.setText("escribir id");
 
         jLabel11.setText("Sexo:");
 
+        lblescribirsexo.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblescribirsexo.setText("escribir sexo");
 
         jLabel13.setText("fecha de toma:");
 
+        lblnombremedico.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblnombremedico.setText("nombre del medico");
 
+        lblescribirfechadetoma.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblescribirfechadetoma.setText("escribir la fecha de toma");
 
         jLabel16.setText("Medico:");
@@ -379,17 +375,16 @@ public class Ingreso_resultados extends javax.swing.JFrame {
                                 .addComponent(lblescribirid, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(67, 67, 67)
                                 .addComponent(lblescribirsexo)))
-                        .addGap(56, 56, 56))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblnombredelpaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(5, 5, 5)))
-                .addComponent(lblnombremedico, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(56, 56, 56)
+                        .addComponent(lblnombremedico, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(lblnombredelpaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblescribirfechadetoma, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(280, 280, 280)
@@ -412,18 +407,21 @@ public class Ingreso_resultados extends javax.swing.JFrame {
                     .addComponent(lblescribirsexo)
                     .addComponent(lblnombremedico)
                     .addComponent(lblescribirfechadetoma))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(38, 38, 38)
                     .addComponent(jLabel16)
-                    .addContainerGap(46, Short.MAX_VALUE)))
+                    .addContainerGap(47, Short.MAX_VALUE)))
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 60, 660, -1));
 
+        jLabel17.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(0, 153, 255));
         jLabel17.setText("CAPTURA DE PARAMETROS");
 
+        jtableparametros.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jtableparametros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -461,6 +459,7 @@ public class Ingreso_resultados extends javax.swing.JFrame {
             }
         });
 
+        lblEscribirfolio.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblEscribirfolio.setText("escribir folio");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -515,6 +514,7 @@ public class Ingreso_resultados extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 560, 520, 100));
 
+        lblobservacion.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblobservacion.setText("OBERVACION:");
         jPanel1.add(lblobservacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 540, 160, -1));
 
@@ -596,10 +596,6 @@ public class Ingreso_resultados extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnguardarparametrosActionPerformed
 
-    private void btnbuscarpacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscarpacienteActionPerformed
-
-    }//GEN-LAST:event_btnbuscarpacienteActionPerformed
-
     private void btncapturarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncapturarActionPerformed
 
         String seleccion = jList1.getSelectedValue();
@@ -624,7 +620,7 @@ public class Ingreso_resultados extends javax.swing.JFrame {
             lblEscribirfolio.setText(folio);
 
             // 5. Cargar los análisis en la lista de clase y en el JComboBox
-            // Usamos la lista de clase 'listaAnalisisActuales' para que btncambiar pueda usarla después
+            // Usamos la lista de clase listaAnalisisActuales para que btncambiar pueda usarla después
             listaAnalisisActuales = pruebaService.obtenerAnalisisPorFolio(folio);
 
             cbxanalisis.removeAllItems();
@@ -648,7 +644,6 @@ public class Ingreso_resultados extends javax.swing.JFrame {
             return;
         }
 
-        // 3. Obtener el DTO de la lista (Esto ya no dará error de tipos)
         AnalisisDTO seleccionado = listaAnalisisActuales.get(index);
 
         try {
@@ -657,12 +652,12 @@ public class Ingreso_resultados extends javax.swing.JFrame {
 
             // 5. Cargar los datos en la tabla
             DefaultTableModel model = (DefaultTableModel) jtableparametros.getModel();
-            model.setRowCount(0); // Limpiar tabla
+            model.setRowCount(0);
 
             for (ParametroDTO p : this.listaParametrosCargados) {
                 model.addRow(new Object[]{
                     p.getNombre(),
-                    "", // Espacio para que el usuario escriba el valor
+                    "", 
                     p.getUnidad(),
                     p.getRangoFormateado()
                 });
@@ -744,7 +739,6 @@ public class Ingreso_resultados extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPMENUDEPRINCIPAL;
     private javax.swing.JPanel JPPENDIENTES;
-    private javax.swing.JButton btnbuscarpaciente;
     private javax.swing.JButton btncambiar;
     private javax.swing.JButton btncambiarmedico;
     private javax.swing.JButton btncapturar;
@@ -777,12 +771,10 @@ public class Ingreso_resultados extends javax.swing.JFrame {
     private javax.swing.JLabel lblescribirfechadetoma;
     private javax.swing.JLabel lblescribirid;
     private javax.swing.JLabel lblescribirsexo;
-    private javax.swing.JLabel lblmediconombre;
     private javax.swing.JLabel lblnombredelpaciente;
     private javax.swing.JLabel lblnombremedico;
     private javax.swing.JLabel lblobservacion;
     private javax.swing.JLabel lblpendientes;
-    private javax.swing.JTextField txtbuscarpaciente;
     private javax.swing.JTextArea txtobservacion;
     // End of variables declaration//GEN-END:variables
 }

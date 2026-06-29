@@ -7,6 +7,8 @@ package dtos;
 import java.util.List;
 
 /**
+ * DTO que encapsula el detalle completo de una prueba médica. Utilizado para
+ * mostrar toda la información clínica relevante de un folio específico.
  *
  * @author golea
  */
@@ -40,8 +42,6 @@ public class PruebaDetalleDTO {
         this.resultados = resultados;
     }
 
-    
-    
     public String getNombrePaciente() {
         return nombrePaciente;
     }

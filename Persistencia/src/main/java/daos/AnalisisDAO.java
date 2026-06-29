@@ -20,6 +20,10 @@ import javax.persistence.criteria.Root;
  *
  * @author golea
  */
+/**
+ * Clase encargada de realizar las operaciones de persistencia relacionadas con
+ * Analisis.
+ */
 public class AnalisisDAO implements IAnalisisDAO {
 
     private IConexionBD conexion;
@@ -28,16 +32,24 @@ public class AnalisisDAO implements IAnalisisDAO {
         this.conexion = conexion;
     }
 
+    /**
+     * Consulta los análisis asociados a una prueba específica utilizando
+     * Criteria API. Realiza un recorrido desde Resultado -> Parametro ->
+     * Analisis.
+     *
+     * * @param idPrueba ID de la prueba para filtrar.
+     * @return Lista de análisis encontrados.
+     * @throws PersistenciaException Si ocurre un error en la conexión o
+     * ejecución.
+     */
     @Override
     public List<AnalisisEntidad> consultarAnalisisPorPrueba(Long idPrueba) throws PersistenciaException {
         EntityManager em = conexion.getEntityManager();
         try {
             CriteriaBuilder builder = em.getCriteriaBuilder();
-            // Queremos obtener AnalisisEntidad
             CriteriaQuery<AnalisisEntidad> criteria = builder.createQuery(AnalisisEntidad.class);
             Root<ResultadoEntidad> root = criteria.from(ResultadoEntidad.class);
 
-            // JOIN: Resultado -> Parametro -> Analisis
             Join<ResultadoEntidad, javax.persistence.criteria.Path> paramJoin = root.join("parametro");
             Join<Object, AnalisisEntidad> analisisJoin = paramJoin.join("analisis");
 

@@ -31,7 +31,7 @@ public class Reportes extends javax.swing.JPanel {
     }
 
     private void cargarLista() {
-        // 1. Instanciamos el servicio (asegúrate de tener el método en PruebaService)
+        // 1. Instanciamos el servicio 
         PruebaService service = new PruebaService();
 
         // 2. Creamos el modelo para el JList
@@ -51,7 +51,6 @@ public class Reportes extends javax.swing.JPanel {
     private String generarHTMLReporte(dtos.ReportePacienteDTO datos) {
         StringBuilder sb = new StringBuilder();
 
-        // Configuración de estilos CSS para un reporte clínico profesional
         sb.append("<html><head><style>");
         sb.append("body { font-family: Arial, sans-serif; margin: 30px; color: #333; }");
         sb.append("h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; text-align: center; }");
@@ -131,35 +130,52 @@ public class Reportes extends javax.swing.JPanel {
 
         JPMENUDEPRINCIPAL.setBackground(new java.awt.Color(31, 41, 55));
 
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Salud Total");
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Gestion de Laboratorio");
 
+        btncatalogo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btncatalogo.setForeground(new java.awt.Color(255, 255, 255));
         btncatalogo.setText("Catalogo");
+        btncatalogo.setBorder(null);
+        btncatalogo.setContentAreaFilled(false);
         btncatalogo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btncatalogoActionPerformed(evt);
             }
         });
 
+        btnsolicitudes.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btnsolicitudes.setForeground(new java.awt.Color(255, 255, 255));
         btnsolicitudes.setText("Solicitudes");
+        btnsolicitudes.setBorder(null);
+        btnsolicitudes.setContentAreaFilled(false);
         btnsolicitudes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnsolicitudesActionPerformed(evt);
             }
         });
 
+        btnresultados.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btnresultados.setForeground(new java.awt.Color(255, 255, 255));
         btnresultados.setText("Resultados");
+        btnresultados.setBorder(null);
+        btnresultados.setContentAreaFilled(false);
         btnresultados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnresultadosActionPerformed(evt);
             }
         });
 
+        btnreportes.setBackground(new java.awt.Color(0, 153, 255));
+        btnreportes.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btnreportes.setForeground(new java.awt.Color(255, 255, 255));
         btnreportes.setText("Reportes");
         btnreportes.setToolTipText("");
+        btnreportes.setBorder(null);
         btnreportes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnreportesActionPerformed(evt);
@@ -196,30 +212,31 @@ public class Reportes extends javax.swing.JPanel {
                 .addComponent(btnresultados)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnreportes)
-                .addContainerGap(404, Short.MAX_VALUE))
+                .addContainerGap(427, Short.MAX_VALUE))
         );
 
         jpanelfondo.add(JPMENUDEPRINCIPAL, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, 690));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
+        jLabel3.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel3.setText("Emision de Reportes");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(618, Short.MAX_VALUE))
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(594, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jLabel3)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         jpanelfondo.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 750, 50));
@@ -354,7 +371,7 @@ public class Reportes extends javax.swing.JPanel {
 
         String filtro = txtbuscador.getText().toLowerCase().trim();
 
-        // 1. Obtener todos los datos nuevamente (o usar una lista cacheada)
+        // 1. Obtener todos los datos nuevamente
         PruebaService service = new PruebaService();
         List<dtos.ClientePruebaCompletaDTO> listaCompleta = service.obtenerClientesCompletos();
 
@@ -398,7 +415,6 @@ public class Reportes extends javax.swing.JPanel {
 
         if (datos != null) {
             try {
-                // 1. Construir el HTML
                 String html = generarHTMLReporte(datos);
 
                 // 2. Definir ruta de salida

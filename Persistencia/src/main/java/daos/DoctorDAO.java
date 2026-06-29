@@ -22,35 +22,41 @@ import javax.persistence.criteria.Root;
  *
  * @author golea
  */
+
+/**
+ * Clase encargada de la persistencia y acceso a datos de DoctorEntidad.
+ */
 public class DoctorDAO implements IDoctorDAO {
 
     private IConexionBD conexion;
 
-    // Inyectamos la interfaz en el constructor
+    /**
+     * Constructor que recibe la implementación de la conexión.
+     * @param conexion Interfaz de conexión a base de datos.
+     */
     public DoctorDAO(IConexionBD conexion) {
         this.conexion = conexion;
     }
 
-    // Singleton para el EntityManagerFactory
+    /**
+     * Recupera todos los doctores registrados en la base de datos.
+     * @return Lista de objetos DoctorEntidad.
+     * @throws PersistenciaException Si ocurre un error durante la consulta.
+     */
     @Override
     public List<DoctorEntidad> consultarTodos() throws PersistenciaException {
         // Obtenemos el EntityManager del singleton que creamos anteriormente
         EntityManager em = conexion.getEntityManager();
 
         try {
-            // 1. Iniciamos el constructor de criterios
             CriteriaBuilder builder = em.getCriteriaBuilder();
 
-            // 2. Definimos que queremos obtener DoctorEntidad
             CriteriaQuery<DoctorEntidad> criteria = builder.createQuery(DoctorEntidad.class);
 
-            // 3. Definimos la raíz (la tabla FROM)
             Root<DoctorEntidad> root = criteria.from(DoctorEntidad.class);
 
-            // 4. Seleccionamos la raíz (SELECT * equivalente)
             criteria.select(root);
 
-            // 5. Ejecutamos la consulta
             TypedQuery<DoctorEntidad> query = em.createQuery(criteria);
             return query.getResultList();
 

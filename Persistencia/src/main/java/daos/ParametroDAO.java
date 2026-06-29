@@ -20,16 +20,27 @@ import javax.persistence.criteria.Root;
  *
  * @author golea
  */
+
+/**
+ * Clase que gestiona el acceso a datos para la entidad ParametroEntidad.
+ */
 public class ParametroDAO implements IParametroDAO {
 
     private IConexionBD conexion;
 
-    // Inyectamos la interfaz en el constructor
+    /**
+     * Constructor que inyecta la conexión a la base de datos.
+     * @param conexion Interfaz para obtener el EntityManager.
+     */
     public ParametroDAO(IConexionBD conexion) {
         this.conexion = conexion;
     }
 
-    
+    /**
+     * Consulta los parámetros vinculados a un análisis dado su ID.
+     * @param idAnalisis Identificador único del análisis.
+     * @return Lista de parámetros encontrados.
+     */
     public List<ParametroEntidad> consultarPorAnalisis(Long idAnalisis) {
         EntityManager em = conexion.getEntityManager();
         

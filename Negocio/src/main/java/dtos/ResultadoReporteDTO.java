@@ -5,6 +5,8 @@
 package dtos;
 
 /**
+ * DTO optimizado para la generación de reportes impresos o digitales. Incluye
+ * los valores de referencia para contrastar el resultado obtenido.
  *
  * @author golea
  */
@@ -13,7 +15,7 @@ public class ResultadoReporteDTO {
     private String nombreParametro;
     private String valor;
     private String observacion;
-    private String unidades;         
+    private String unidades;
     private String valorMin;
     private String valorMax;
 
@@ -42,10 +44,6 @@ public class ResultadoReporteDTO {
         this.valorMax = valorMax;
     }
 
- 
-    
-
-    
     public String getUnidades() {
         return unidades;
     }
@@ -53,9 +51,6 @@ public class ResultadoReporteDTO {
     public void setUnidades(String unidades) {
         this.unidades = unidades;
     }
-
- 
-    
 
     public String getNombreParametro() {
         return nombreParametro;
@@ -80,5 +75,5 @@ public class ResultadoReporteDTO {
     public void setObservacion(String observacion) {
         this.observacion = observacion;
     }
-    
+
 }

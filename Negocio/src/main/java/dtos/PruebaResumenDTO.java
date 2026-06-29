@@ -5,6 +5,9 @@
 package dtos;
 
 /**
+ * DTO para resúmenes de pruebas. Optimiza la carga de datos en listas al
+ * excluir información técnica detallada que no es necesaria en una vista de
+ * catálogo.
  *
  * @author golea
  */
@@ -34,7 +37,10 @@ public class PruebaResumenDTO {
         this.nombreCliente = nombreCliente;
     }
 
-    
+    /**
+     * Sobrescribe toString para facilitar la visualización rápida en
+     * componentes de UI como JLists o ComboBoxes.
+     */
     @Override
     public String toString() {
         return "Folio: " + folio + " | Cliente: " + nombreCliente;

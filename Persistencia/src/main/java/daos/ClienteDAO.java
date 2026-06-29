@@ -18,15 +18,28 @@ import javax.persistence.criteria.Root;
  *
  * @author golea
  */
+
+/**
+ * Clase que gestiona el acceso a datos para la entidad ClienteEntidad.
+ */
 public class ClienteDAO implements IClienteDAO {
 
     private IConexionBD conexion;
 
-    // Inyectamos la interfaz en el constructor
+    /**
+     * Constructor que inyecta la dependencia de conexión a base de datos.
+     * @param conexion Objeto que gestiona la persistencia.
+     */
     public ClienteDAO(IConexionBD conexion) {
         this.conexion = conexion;
     }
 
+    /**
+     * Consulta un cliente por su nombre utilizando JPA Criteria API.
+     * @param nombre Nombre del cliente a buscar.
+     * @return El ClienteEntidad encontrado o null si no existe.
+     * @throws PersistenciaException En caso de errores en la conexión o ejecución.
+     */
     @Override
     public ClienteEntidad consultarPorNombre(String nombre) throws PersistenciaException {
         EntityManager em = conexion.getEntityManager();
@@ -35,12 +48,11 @@ public class ClienteDAO implements IClienteDAO {
             CriteriaQuery<ClienteEntidad> criteria = builder.createQuery(ClienteEntidad.class);
             Root<ClienteEntidad> root = criteria.from(ClienteEntidad.class);
 
-            // Filtro: WHERE nombre = ?
             criteria.where(builder.equal(root.get("nombre"), nombre));
 
             return em.createQuery(criteria).getSingleResult();
         } catch (NoResultException e) {
-            return null; // O lanza una excepción propia
+            return null;
         } finally {
             em.close();
         }
