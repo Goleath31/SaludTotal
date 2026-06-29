@@ -18,17 +18,25 @@ public class ReportePacienteDTO {
     private String nombreMedico;
     private String fechaToma;
     private List<ResultadoReporteDTO> resultados;
+    private String nombreAnalisis;
 
-    public ReportePacienteDTO(String folio, String nombrePaciente, String sexo, String nombreMedico, String fechaToma, List<ResultadoReporteDTO> resultados) {
+    public ReportePacienteDTO(String folio, String nombrePaciente, String sexo, String nombreMedico, String fechaToma, String nombreAnalisis, List<ResultadoReporteDTO> resultados) {
         this.folio = folio;
         this.nombrePaciente = nombrePaciente;
         this.sexo = sexo;
         this.nombreMedico = nombreMedico;
         this.fechaToma = fechaToma;
+        this.nombreAnalisis = nombreAnalisis;
         this.resultados = resultados;
     }
-    
-    
+
+    public String getNombreAnalisis() {
+        return nombreAnalisis;
+    }
+
+    public void setNombreAnalisis(String nombreAnalisis) {
+        this.nombreAnalisis = nombreAnalisis;
+    }
 
     public String getFolio() {
         return folio;
@@ -77,6 +85,5 @@ public class ReportePacienteDTO {
     public void setResultados(List<ResultadoReporteDTO> resultados) {
         this.resultados = resultados;
     }
-    
-    
+
 }

@@ -51,36 +51,38 @@ public class Reportes extends javax.swing.JPanel {
     private String generarHTMLReporte(dtos.ReportePacienteDTO datos) {
         StringBuilder sb = new StringBuilder();
 
-        // Inicio del HTML con CSS para el formato profesional
+        // Configuración de estilos CSS para un reporte clínico profesional
         sb.append("<html><head><style>");
-        sb.append("body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; color: #333; }");
+        sb.append("body { font-family: Arial, sans-serif; margin: 30px; color: #333; }");
         sb.append("h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; text-align: center; }");
-        sb.append(".header-box { background-color: #f8f9fa; padding: 20px; border: 1px solid #dee2e6; border-radius: 8px; margin-bottom: 30px; }");
+        sb.append("h2 { color: #2c3e50; text-align: center; margin-top: 10px; }");
+        sb.append(".header-box { background-color: #f8f9fa; padding: 15px; border: 1px solid #dee2e6; border-radius: 5px; margin-bottom: 25px; }");
         sb.append(".header-box p { margin: 5px 0; font-size: 14px; }");
-        sb.append("table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }");
-        sb.append("th { background-color: #3498db; color: white; padding: 12px; text-align: left; border: 1px solid #2980b9; }");
-        sb.append("td { border: 1px solid #ddd; padding: 10px; }");
+        sb.append("table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }");
+        sb.append("th { background-color: #3498db; color: white; padding: 10px; text-align: left; border: 1px solid #2980b9; }");
+        sb.append("td { border: 1px solid #ddd; padding: 8px; }");
         sb.append("tr:nth-child(even) { background-color: #f2f2f2; }");
         sb.append("</style></head><body>");
 
-        // Título
+        // Título del documento
         sb.append("<h1>Reporte de Resultados Médicos</h1>");
 
-        // Bloque de información del paciente
+        // Datos del paciente
         sb.append("<div class='header-box'>");
         sb.append("<p><strong>Paciente:</strong> ").append(datos.getNombrePaciente()).append("</p>");
         sb.append("<p><strong>Folio:</strong> ").append(datos.getFolio()).append(" &#160;&#160; <strong>Sexo:</strong> ").append(datos.getSexo()).append("</p>");
         sb.append("<p><strong>Doctor:</strong> ").append(datos.getNombreMedico()).append("</p>");
-        sb.append("<p><strong>Fecha de Emisión:</strong> ").append(datos.getFechaToma()).append("</p>");
+        sb.append("<p><strong>Fecha:</strong> ").append(datos.getFechaToma()).append("</p>");
         sb.append("</div>");
+
+        // Nombre del análisis
+        sb.append("<h2>Análisis: ").append(datos.getNombreAnalisis()).append("</h2>");
 
         // Tabla de resultados
         sb.append("<table>");
-        sb.append("<tr>");
-        sb.append("<th>Parámetro</th><th>Valor</th><th>Unidades</th><th>Valores Ref.</th><th>Observación</th>");
-        sb.append("</tr>");
+        sb.append("<tr><th>Parámetro</th><th>Valor</th><th>Unidad</th><th>Valores Ref.</th><th>Observación</th></tr>");
 
-        // Llenado dinámico de la tabla
+        // Ciclo para llenar los resultados
         for (dtos.ResultadoReporteDTO res : datos.getResultados()) {
             sb.append("<tr>");
             sb.append("<td>").append(res.getNombreParametro()).append("</td>");
@@ -91,8 +93,7 @@ public class Reportes extends javax.swing.JPanel {
             sb.append("</tr>");
         }
 
-        sb.append("</table>");
-        sb.append("</body></html>");
+        sb.append("</table></body></html>");
 
         return sb.toString();
     }

@@ -36,40 +36,29 @@ public class ReporteDAO implements IReporteDAO {
     public ReportePacienteDTO obtenerDatosReporte(String folio) {
         EntityManager em = conexion.getEntityManager();
         try {
-            // Buscamos la prueba por folio
             String jpql = "SELECT p FROM PruebaEntidad p WHERE p.folio = :folio";
             TypedQuery<PruebaEntidad> query = em.createQuery(jpql, PruebaEntidad.class);
             query.setParameter("folio", folio);
-
             PruebaEntidad prueba = query.getSingleResult();
 
-            // Mapeo de Entidad a DTO
             List<ResultadoReporteDTO> listaResultados = new ArrayList<>();
+            String nombreAnalisis = "Sin análisis";
 
             for (ResultadoEntidad res : prueba.getResultados()) {
                 ParametroEntidad p = res.getParametro();
 
-                // 1. Obtener Unidad de Medida (a través de la relación)
+                nombreAnalisis = (p.getAnalisis() != null) ? p.getAnalisis().getNombre() : "N/A";
+
                 String unidad = (p.getUnidadMedida() != null) ? p.getUnidadMedida().getNombre() : "N/A";
 
-                // 2. Obtener Rango (usando el primero disponible como ejemplo)
-                String vMin = "N/A";
-                String vMax = "N/A";
+                String vMin = "N/A", vMax = "N/A";
                 if (p.getRangos() != null && !p.getRangos().isEmpty()) {
-                    // Aquí podrías agregar lógica para filtrar por sexo si lo requieres
-                    RangoEvaluacionEntidad rango = p.getRangos().get(0);
-                    vMin = String.valueOf(rango.getRangoInicial());
-                    vMax = String.valueOf(rango.getRangoFinal());
+                    vMin = String.valueOf(p.getRangos().get(0).getRangoInicial());
+                    vMax = String.valueOf(p.getRangos().get(0).getRangoFinal());
                 }
 
-                // 3. Crear el DTO con los 6 parámetros requeridos por el constructor
                 listaResultados.add(new ResultadoReporteDTO(
-                        p.getNombre(),
-                        res.getValor_obtenido(),
-                        res.getObservacion(),
-                        unidad,
-                        vMin,
-                        vMax
+                        p.getNombre(), res.getValor_obtenido(), res.getObservacion(), unidad, vMin, vMax
                 ));
             }
 
@@ -79,14 +68,14 @@ public class ReporteDAO implements IReporteDAO {
                     prueba.getCliente().getSexo(),
                     prueba.getDoctor().getNombre() + " " + prueba.getDoctor().getApellido_paterno(),
                     prueba.getFechaHoraGeneracion().toString(),
+                    nombreAnalisis,
                     listaResultados
             );
-
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         } finally {
             em.close();
         }
     }
 }
+
