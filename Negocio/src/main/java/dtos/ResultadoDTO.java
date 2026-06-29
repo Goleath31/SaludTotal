@@ -14,6 +14,8 @@ public class ResultadoDTO {
     private Long idPrueba;
     private String valor;
     private String observacion;
+    
+    private String nombreParametro;
 
     public ResultadoDTO(Long idParametro, Long idPrueba, String valor, String observacion) {
         this.idParametro = idParametro;
@@ -21,6 +23,26 @@ public class ResultadoDTO {
         this.valor = valor;
         this.observacion = observacion;
     }
+
+    public ResultadoDTO(Long idParametro, Long idPrueba, String valor, String observacion, String nombreParametro) {
+        this.idParametro = idParametro;
+        this.idPrueba = idPrueba;
+        this.valor = valor;
+        this.observacion = observacion;
+        this.nombreParametro = nombreParametro;
+    }
+
+    
+    
+    public String getNombreParametro() {
+        return nombreParametro;
+    }
+
+    public void setNombreParametro(String nombreParametro) {
+        this.nombreParametro = nombreParametro;
+    }
+    
+    
 
     public String getObservacion() {
         return observacion;

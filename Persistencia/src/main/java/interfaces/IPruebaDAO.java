@@ -4,6 +4,7 @@
  */
 package interfaces;
 
+import dtos.ClientePruebaCompletaDTO;
 import entidades.PruebaEntidad;
 import exception.PersistenciaException;
 import java.util.List;
@@ -17,4 +18,6 @@ public interface IPruebaDAO {
     List<PruebaEntidad> consultarPorDoctor(Long idDoctor) throws PersistenciaException;
     
     PruebaEntidad buscarPorFolio(String folio) throws PersistenciaException;
+    
+    List<ClientePruebaCompletaDTO> obtenerClientesConPruebasCompletas();
 }

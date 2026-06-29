@@ -5,10 +5,14 @@
 package daos;
 
 import conexion.IConexionBD;
+import dtos.ClientePruebaCompletaDTO;
 import entidades.PruebaEntidad;
 import exception.PersistenciaException;
 import interfaces.IPruebaDAO;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -57,6 +61,22 @@ public class PruebaDAO implements IPruebaDAO {
             em.close();
         }
     }
-    
-    
+
+    @Override
+    public List<ClientePruebaCompletaDTO> obtenerClientesConPruebasCompletas() {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            String jpql = "SELECT new dtos.ClientePruebaCompletaDTO(p.folio, p.cliente.nombre) "
+                    + "FROM PruebaEntidad p "
+                    + "WHERE NOT EXISTS (SELECT r FROM ResultadoEntidad r "
+                    + "WHERE r.prueba = p AND (r.valor_obtenido IS NULL OR r.valor_obtenido = '' OR r.observacion IS NULL OR r.observacion = ''))";
+
+            return em.createQuery(jpql, ClientePruebaCompletaDTO.class).getResultList();
+        } catch (Exception e) {
+            Logger.getLogger(PruebaDAO.class.getName()).log(Level.SEVERE, null, e);
+            return new ArrayList<>();
+        } finally {
+            em.close();
+        }
+    }
 }

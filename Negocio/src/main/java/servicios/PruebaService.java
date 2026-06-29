@@ -10,6 +10,7 @@ import conexion.IConexionBD;
 import daos.AnalisisDAO;
 import daos.PruebaDAO;
 import dtos.AnalisisDTO;
+import dtos.ClientePruebaCompletaDTO;
 import dtos.PruebaDetalleDTO;
 import dtos.PruebaResumenDTO;
 import entidades.AnalisisEntidad;
@@ -84,5 +85,9 @@ public class PruebaService {
         } catch (Exception e) {
             throw new NegocioException("Error al cargar análisis: " + e.getMessage());
         }
+    }
+
+    public List<ClientePruebaCompletaDTO> obtenerClientesCompletos() {
+        return pruebaDAO.obtenerClientesConPruebasCompletas();
     }
 }
