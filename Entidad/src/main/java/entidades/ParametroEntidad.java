@@ -50,7 +50,10 @@ public class ParametroEntidad implements Serializable {
 
     @OneToMany(mappedBy = "parametro" , cascade = CascadeType.ALL)
     private List<RangoEvaluacionEntidad> rangos;
-    
+
+    @Column(name = "fecha_eliminacion", nullable = true)
+    private java.util.Date fechaEliminacion;
+
     public ParametroEntidad() {
     }
     
@@ -112,6 +115,14 @@ public class ParametroEntidad implements Serializable {
 
     public void setNota_descriptiva(String nota_descriptiva) {
         this.nota_descriptiva = nota_descriptiva;
+    }
+
+    public java.util.Date getFechaEliminacion() {
+        return fechaEliminacion;
+    }
+
+    public void setFechaEliminacion(java.util.Date fechaEliminacion) {
+        this.fechaEliminacion = fechaEliminacion;
     }
 
     @Override

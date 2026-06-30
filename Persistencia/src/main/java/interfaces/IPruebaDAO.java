@@ -47,4 +47,12 @@ public interface IPruebaDAO {
      * sus pruebas completas.
      */
     List<ClientePruebaCompletaDTO> obtenerClientesConPruebasCompletas();
+
+    PruebaEntidad guardar(PruebaEntidad nuevaPrueba) throws PersistenciaException;
+
+    List<PruebaEntidad> consultarTodos(int pagina, int tamanoPagina) throws PersistenciaException;
+
+    long contarTodos() throws PersistenciaException;
+
+    List<PruebaEntidad> buscarPorFiltro(String texto) throws PersistenciaException;
 }

@@ -8,7 +8,9 @@ package dtos;
  *
  * @author golea
  */
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Constructor vacío estándar.
@@ -46,12 +48,35 @@ public class ClienteDTO {
         return nombreCompleto;
     }
 
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
+
     public String getSexo() {
         return sexo;
     }
 
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    /**
+     * Formatea fechaNacimiento para mostrarla en pantalla. No es una columna
+     * de la base de datos, se calcula a partir de fechaNacimiento.
+     */
+    public String getFechaNacimientoFormateada() {
+        if (fechaNacimiento == null) {
+            return "";
+        }
+        return new SimpleDateFormat("d 'de' MMMM yyyy", new Locale("es", "ES")).format(fechaNacimiento);
     }
 
     public String getTipoSangre() {

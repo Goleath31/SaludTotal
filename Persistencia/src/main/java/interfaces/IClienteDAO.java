@@ -6,6 +6,7 @@ package interfaces;
 
 import entidades.ClienteEntidad;
 import exception.PersistenciaException;
+import java.util.List;
 
 /**
  * Interfaz que define las operaciones de acceso a datos para la entidad
@@ -13,6 +14,7 @@ import exception.PersistenciaException;
  * de clientes.
  *
  * @author golea
+ * @author rafaelgb
  */
 public interface IClienteDAO {
 
@@ -25,4 +27,8 @@ public interface IClienteDAO {
      * datos o si no se puede realizar la consulta.
      */
     ClienteEntidad consultarPorNombre(String nombre) throws PersistenciaException;
+
+    ClienteEntidad buscarPorId(Long id) throws PersistenciaException;
+
+    List<ClienteEntidad> buscarPorFiltro(String texto) throws PersistenciaException;
 }

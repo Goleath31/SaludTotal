@@ -46,7 +46,10 @@ public class RangoEvaluacionEntidad implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_parametro")
     private ParametroEntidad parametro;
-    
+
+    @Column(name = "fecha_eliminacion", nullable = true)
+    private java.util.Date fechaEliminacion;
+
     public RangoEvaluacionEntidad() {
     }
 
@@ -96,6 +99,22 @@ public class RangoEvaluacionEntidad implements Serializable {
 
     public void setSexo(String sexo) {
         this.sexo = sexo;
+    }
+
+    public ParametroEntidad getParametro() {
+        return parametro;
+    }
+
+    public void setParametro(ParametroEntidad parametro) {
+        this.parametro = parametro;
+    }
+
+    public java.util.Date getFechaEliminacion() {
+        return fechaEliminacion;
+    }
+
+    public void setFechaEliminacion(java.util.Date fechaEliminacion) {
+        this.fechaEliminacion = fechaEliminacion;
     }
 
     @Override

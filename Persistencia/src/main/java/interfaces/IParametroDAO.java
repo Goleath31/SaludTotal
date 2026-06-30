@@ -11,9 +11,11 @@ import java.util.List;
 /**
  * Interfaz que define las operaciones de acceso a datos para la entidad
  * ParametroEntidad. Proporciona métodos para consultar los parámetros
- * relacionados con análisis clínicos.
+ * relacionados con análisis clínicos, y para administrar el catálogo de
+ * parámetros (alta, baja lógica, búsqueda).
  *
  * @author golea
+ * @author rafaelgb
  */
 public interface IParametroDAO {
 
@@ -27,4 +29,14 @@ public interface IParametroDAO {
      * en la base de datos.
      */
     List<ParametroEntidad> consultarPorAnalisis(Long idAnalisis) throws PersistenciaException;
+
+    ParametroEntidad guardar(ParametroEntidad nuevoParametro) throws PersistenciaException;
+
+    ParametroEntidad buscarPorNombre(String nombre) throws PersistenciaException;
+
+    /**
+     * Da de baja lógica el parámetro (y en cascada sus rangos de evaluación),
+     * registrando la fecha de eliminación en vez de borrarlos físicamente.
+     */
+    ParametroEntidad eliminar(ParametroEntidad parametro) throws PersistenciaException;
 }

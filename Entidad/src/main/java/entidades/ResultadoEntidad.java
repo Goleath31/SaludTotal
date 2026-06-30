@@ -28,10 +28,10 @@ public class ResultadoEntidad implements Serializable {
     @Column(name = "id_resultado")
     private Long id_resultado;
 
-    @Column(name = "valor_obtenido", nullable = false, length = 50)
+    @Column(name = "valor_obtenido", nullable = true, length = 50)
     private String valor_obtenido;
-    
-    @Column(name = "observacion", nullable = false, length = 50)
+
+    @Column(name = "observacion", nullable = true, length = 50)
     private String observacion;
     
     @ManyToOne

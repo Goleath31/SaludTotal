@@ -32,9 +32,9 @@ public class MuestraEntidad implements Serializable {
     @Column(name = "nombre", nullable = false, length = 50)
     private String nombre;
 
-    @OneToOne(mappedBy = "muestra")
-    private AnalisisEntidad analisis;
-    
+    @OneToMany(mappedBy = "muestra")
+    private List<AnalisisEntidad> analisis;
+
     public MuestraEntidad() {
     }
 
@@ -52,6 +52,14 @@ public class MuestraEntidad implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public List<AnalisisEntidad> getAnalisis() {
+        return analisis;
+    }
+
+    public void setAnalisis(List<AnalisisEntidad> analisis) {
+        this.analisis = analisis;
     }
 
     @Override

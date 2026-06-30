@@ -14,8 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -37,12 +37,15 @@ public class AnalisisEntidad implements Serializable {
     @Column(name = "nota_descriptiva", nullable = false, length = 50)
     private String nota_descriptiva;
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_muestra")
     private MuestraEntidad muestra;
-  
+
     @OneToMany(mappedBy = "analisis", cascade = CascadeType.ALL)
     private List<ParametroEntidad> parametros;
+
+    @Column(name = "fecha_eliminacion", nullable = true)
+    private java.util.Date fechaEliminacion;
 
     public AnalisisEntidad() {
     }
@@ -70,9 +73,30 @@ public class AnalisisEntidad implements Serializable {
     public void setNota_descriptiva(String nota_descriptiva) {
         this.nota_descriptiva = nota_descriptiva;
     }
-    
-    
-    
+
+    public MuestraEntidad getMuestra() {
+        return muestra;
+    }
+
+    public void setMuestra(MuestraEntidad muestra) {
+        this.muestra = muestra;
+    }
+
+    public List<ParametroEntidad> getParametros() {
+        return parametros;
+    }
+
+    public void setParametros(List<ParametroEntidad> parametros) {
+        this.parametros = parametros;
+    }
+
+    public java.util.Date getFechaEliminacion() {
+        return fechaEliminacion;
+    }
+
+    public void setFechaEliminacion(java.util.Date fechaEliminacion) {
+        this.fechaEliminacion = fechaEliminacion;
+    }
 
     @Override
     public int hashCode() {

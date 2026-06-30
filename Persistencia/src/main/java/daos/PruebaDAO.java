@@ -14,8 +14,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 /**
@@ -93,6 +95,89 @@ public class PruebaDAO implements IPruebaDAO {
         } catch (Exception e) {
             Logger.getLogger(PruebaDAO.class.getName()).log(Level.SEVERE, null, e);
             return new ArrayList<>();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public PruebaEntidad guardar(PruebaEntidad nuevaPrueba) throws PersistenciaException {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(nuevaPrueba);
+            em.getTransaction().commit();
+
+            return nuevaPrueba;
+        } catch (Exception ex) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new PersistenciaException("Error al guardar la solicitud: " + ex.getMessage());
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<PruebaEntidad> consultarTodos(int pagina, int tamanoPagina) throws PersistenciaException {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            int offset = (pagina - 1) * tamanoPagina;
+
+            CriteriaBuilder builder = em.getCriteriaBuilder();
+            CriteriaQuery<PruebaEntidad> criteria = builder.createQuery(PruebaEntidad.class);
+            Root<PruebaEntidad> root = criteria.from(PruebaEntidad.class);
+
+            criteria.select(root).orderBy(builder.desc(root.get("id_prueba")));
+
+            TypedQuery<PruebaEntidad> query = em.createQuery(criteria);
+            query.setFirstResult(offset);
+            query.setMaxResults(tamanoPagina);
+
+            return query.getResultList();
+        } catch (Exception ex) {
+            throw new PersistenciaException("Error al consultar las solicitudes: " + ex.getMessage());
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public long contarTodos() throws PersistenciaException {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            CriteriaBuilder builder = em.getCriteriaBuilder();
+            CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+            Root<PruebaEntidad> root = criteria.from(PruebaEntidad.class);
+
+            criteria.select(builder.count(root));
+
+            return em.createQuery(criteria).getSingleResult();
+        } catch (Exception ex) {
+            throw new PersistenciaException("Error al contar las solicitudes: " + ex.getMessage());
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<PruebaEntidad> buscarPorFiltro(String texto) throws PersistenciaException {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            CriteriaBuilder builder = em.getCriteriaBuilder();
+            CriteriaQuery<PruebaEntidad> criteria = builder.createQuery(PruebaEntidad.class);
+            Root<PruebaEntidad> root = criteria.from(PruebaEntidad.class);
+
+            String comodin = "%" + texto.toLowerCase() + "%";
+            Predicate porFolio = builder.like(builder.lower(root.get("folio")), comodin);
+            Predicate porCliente = builder.like(builder.lower(root.get("cliente").get("nombre")), comodin);
+
+            criteria.select(root).where(builder.or(porFolio, porCliente)).orderBy(builder.desc(root.get("id_prueba")));
+
+            return em.createQuery(criteria).getResultList();
+        } catch (Exception ex) {
+            throw new PersistenciaException("Error al filtrar las solicitudes: " + ex.getMessage());
         } finally {
             em.close();
         }

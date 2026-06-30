@@ -88,8 +88,16 @@ public class PruebaEntidad implements Serializable {
         return cliente;
     }
 
+    public void setCliente(ClienteEntidad cliente) {
+        this.cliente = cliente;
+    }
+
     public DoctorEntidad getDoctor() {
         return doctor;
+    }
+
+    public void setDoctor(DoctorEntidad doctor) {
+        this.doctor = doctor;
     }
 
     @Override
